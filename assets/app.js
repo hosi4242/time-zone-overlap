@@ -55,7 +55,8 @@
   function cityIndex(city) {
     return state.cities.indexOf(city);
   }
-\n  function continentForRegion(region) {
+
+  function continentForRegion(region) {
     var map = { na: "North America", sa: "South America", eu: "Europe", me: "Asia", af: "Africa", as: "Asia", oc: "Oceania" };
     return map[region] || "World";
   }
