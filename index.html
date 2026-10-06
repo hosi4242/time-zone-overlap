@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Find practical working-hour overlaps across time zones, with DST-aware timelines and calendar export.">
+  <meta name="theme-color" content="#f7f8fb">
+  <title>Time Zone Overlap Finder</title>
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="/" aria-label="Time Zone Overlap Finder home">Time Zone Overlap Finder</a>
+      <div class="header-actions">
+        <button id="theme-toggle" class="icon-button" type="button" aria-label="Toggle color theme" title="Toggle color theme">Theme</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="page-shell">
+    <section class="hero" aria-labelledby="page-title">
+      <p class="eyebrow">TIME ZONES · WORKING HOURS · DST AWARE</p>
+      <h1 id="page-title">Find a time that works for everyone.</h1>
+      <p class="hero-copy">Compare working hours across cities and find the best overlap, even when daylight saving time changes the clock.</p>
+    </section>
+
+    <section class="panel controls-panel" aria-labelledby="settings-title">
+      <div class="section-heading">
+        <div>
+          <h2 id="settings-title">Meeting settings</h2>
+          <p>Choose cities, working hours, date, and meeting length.</p>
+        </div>
+        <button id="reset-button" class="text-button" type="button">Reset</button>
+      </div>
+
+      <div id="city-list" class="city-list"></div>
+      <button id="add-city" class="secondary-button add-city" type="button">+ Add city</button>
+
+      <div class="settings-grid">
+        <div class="field-group">
+          <label for="date-input">Date</label>
+          <input id="date-input" type="date">
+          <p id="date-note" class="field-note" aria-live="polite"></p>
+        </div>
+        <fieldset class="field-group format-fieldset">
+          <legend>Time format</legend>
+          <div class="segmented" role="group" aria-label="Time format">
+            <button type="button" class="segment" data-format="24" aria-pressed="true">24-hour</button>
+            <button type="button" class="segment" data-format="12" aria-pressed="false">12-hour</button>
+          </div>
+        </fieldset>
+        <fieldset class="field-group meeting-fieldset">
+          <legend>Meeting length</legend>
+          <div class="segmented" role="group" aria-label="Meeting length">
+            <button type="button" class="segment" data-length="30" aria-pressed="false">30 min</button>
+            <button type="button" class="segment" data-length="60" aria-pressed="true">60 min</button>
+            <button type="button" class="segment" data-length="90" aria-pressed="false">90 min</button>
+          </div>
+        </fieldset>
+      </div>
+    </section>
+
+    <section class="notice-stack" id="notice-stack" aria-live="polite"></section>
+
+    <section class="panel result-panel" aria-labelledby="result-title">
+      <div class="section-heading result-heading">
+        <div>
+          <p class="eyebrow">RECOMMENDATION</p>
+          <h2 id="result-title">Best meeting time</h2>
+        </div>
+        <span id="fit-badge" class="status-badge">Calculating</span>
+      </div>
+      <div id="recommendation" class="recommendation"></div>
+      <div id="summary-live" class="sr-live" aria-live="polite" aria-atomic="true"></div>
+      <div class="action-row">
+        <button id="copy-result" class="primary-button" type="button">Copy result</button>
+        <button id="copy-link" class="secondary-button" type="button">Copy link</button>
+        <a id="google-calendar" class="secondary-button button-link" href="#" target="_blank" rel="noopener noreferrer">Add to Google Calendar</a>
+        <button id="download-ics" class="secondary-button" type="button">Download .ics</button>
+      </div>
+      <p id="action-status" class="action-status" aria-live="polite"></p>
+    </section>
+
+    <section class="panel timeline-panel" aria-labelledby="timeline-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">UTC AXIS</p>
+          <h2 id="timeline-title">Working-hour timeline</h2>
+          <p>The anchor city is the first city. The axis follows its local date while every row shows its own local time.</p>
+        </div>
+      </div>
+      <div id="current-time-note" class="current-time-note"></div>
+      <div id="timeline" class="timeline" aria-label="Working-hour timeline"></div>
+      <details class="table-details">
+        <summary>View as table</summary>
+        <div class="table-scroll">
+          <table id="overlap-table">
+            <caption>Overlap ranges and each city's local time</caption>
+            <thead><tr><th scope="col">Overlap</th><th scope="col">Local times</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+
+    <section class="help-block" aria-labelledby="help-title">
+      <h2 id="help-title">How to use this tool</h2>
+      <p>The timeline uses one shared UTC axis; each city row shows the local clock for that instant. The anchor city is the first city and defines the selected calendar date. A recommended overlap is fully inside everyone's working hours. If none is long enough, the fallback recommendation is the least disruptive window according to the tool's deterministic scoring rules. Future dates use current time-zone rules, which governments may change.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Time Zone Overlap Finder runs in your browser. No account or server-side calculation is required.</p>
+  </footer>
+
+  <script src="/assets/engine.js" defer></script>
+  <script src="/assets/cities.js" defer></script>
+  <script src="/assets/app.js" defer></script>
+</body>
+</html>
