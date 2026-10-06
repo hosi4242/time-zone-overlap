@@ -101,7 +101,7 @@
     var s = formatParts(range.start);
     var e = formatParts(range.end);
     var day = range.dayOffset === 0 ? t("sameDay") : (language === "ko" ? (range.dayOffset > 0 ? "+" + range.dayOffset + t("daySingular") : range.dayOffset + t("daySingular")) : (range.dayOffset > 0 ? "+" + range.dayOffset + " " + t("daySingular") + (range.dayOffset === 1 ? "" : "s") : range.dayOffset + " " + t("daySingular") + (range.dayOffset === -1 ? "" : "s")));
-    if (range.endDateDiffers) return city.name + ": " + s + "–" + e + " (end date changes; " + day + ")";
+    if (range.endDateDiffers) return city.name + ": " + s + "–" + e + " (" + t("endDateChanges") + day + ")";
     return city.name + ": " + s + "–" + e + " (" + day + ")";
   }
 
@@ -286,7 +286,7 @@
         inputTime.addEventListener("change", function () {
           var value = parseTime(inputTime.value);
           if (value === null) { inputTime.value = timeValue(schedule[item[1]]); return; }
-          schedule[part === 0 ? "start" : "end"] = value;
+          schedule[item[1]] = value;
           if (schedule.start === schedule.end) {
             schedule.start = 540; schedule.end = 1080;
             setActionStatus(t("identicalReset"));
@@ -400,7 +400,7 @@
     var ep = TZO.localParts(rec.endUtc, anchorCity.tz);
     var main = createElement("div", "recommendation-main", formatParts(ap) + "–" + formatParts(ep) + " · " + anchorCity.name);
     var dateText = dateLabel(state.date);
-    var sub = createElement("div", "recommendation-sub", dateText + " · " + recommendationDuration() + " minutes · " + (rec.kind === "overlap" ? t("allWorking") : t("bestFallback")));
+    var sub = createElement("div", "recommendation-sub", dateText + " · " + recommendationDuration() + " " + t("minutes") + " · " + (rec.kind === "overlap" ? t("allWorking") : t("bestFallback")));
     els.recommendation.append(main, sub);
     var per = createElement("div", "per-city-list");
     rec.perCity.forEach(function (range, i) {
