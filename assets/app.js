@@ -392,24 +392,6 @@
   }
 
 
-  function buildTimelineAxis() {
-    var axis = createElement("div", "axis");
-    var track = createElement("div", "axis-track");
-    var slots = result.gridSlotCount;
-    for (var i = 0; i <= slots; i += 1) {
-      var instant = result.baseStartUtc + i * TZO.STEP_MS;
-      if (i === slots || i % 12 === 0) {
-        var tick = createElement("div", "axis-tick");
-        tick.style.left = ((i / slots) * 100) + "%";
-        var p = TZO.localParts(instant, state.cities[0].tz);
-        tick.appendChild(createElement("span", "", formatParts(p)));
-        track.appendChild(tick);
-      }
-    }
-    axis.appendChild(track);
-    return axis;
-  }
-
   function slotClasses(index, cityIndex) {
     var slot = result.slots[index];
     var cls = "slot";
@@ -436,7 +418,6 @@
   function renderTimeline() {
     while (els.timeline.firstChild) els.timeline.removeChild(els.timeline.firstChild);
     var inner = createElement("div", "timeline-inner");
-    inner.appendChild(buildTimelineAxis());
     state.cities.forEach(function (city, cityIndex) {
       var row = createElement("div", "timeline-row");
       var label = createElement("div", "row-label");
