@@ -181,7 +181,11 @@ h2 { margin-bottom: 4px; font-size: 1.2rem; letter-spacing: -.02em; }
 .row-label { padding: 10px; border-right: 1px solid var(--color-border); }
 .row-label strong { display: block; font-size: .82rem; }
 .row-label span { display: block; color: var(--color-muted); font-size: .7rem; }
-.row-track { position: relative; padding: 15px 0; }
+.row-track { position: relative; padding: 8px 0 22px; }
+.row-time-scale { position: absolute; left: 8px; right: 8px; bottom: 2px; height: 14px; pointer-events: none; }
+.row-time-tick { position: absolute; top: 0; transform: translateX(-50%); color: var(--color-muted); font-size: .6rem; line-height: 1; white-space: nowrap; }
+.row-time-tick.first { transform: none; }
+.row-time-tick.last { transform: translateX(-100%); }
 .slot-track { position: relative; height: 42px; margin: 0 8px; border-radius: 7px; overflow: hidden; background: color-mix(in srgb, var(--color-border) 30%, var(--color-bg)); }
 .slot { position: absolute; top: 0; bottom: 0; border-right: 1px solid color-mix(in srgb, var(--color-border) 35%, transparent); }
 .slot.working { background: var(--color-working); }
@@ -269,6 +273,8 @@ th { color: var(--color-muted); font-size: .74rem; }
   .axis-label { padding: 8px 7px; font-size: .64rem; }
   .axis-tick span { left: 0; transform: translateX(-35%); font-size: .58rem; }
   .slot-track { margin: 0 5px; }
+  .row-time-scale { left: 5px; right: 5px; }
+  .row-time-tick { font-size: .54rem; }
 }
 
 @media (max-width: 420px) {
