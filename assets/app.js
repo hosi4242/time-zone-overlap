@@ -409,7 +409,7 @@
       var slotIndex = Math.min(result.gridSlotCount, i * 8);
       var instant = result.baseStartUtc + slotIndex * TZO.STEP_MS;
       var parts = TZO.localParts(instant, city.tz);
-      var tick = createElement("span", "row-time-tick", String(parts.hour));
+      var tick = createElement("span", "row-time-tick", String(parts.hh));
       tick.style.left = ((i / (points - 1)) * 100) + "%";
       if (i === 0) tick.classList.add("first");
       if (i === points - 1) tick.classList.add("last");
