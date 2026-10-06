@@ -387,7 +387,6 @@
     var main = createElement("div", "recommendation-main", formatParts(ap) + "–" + formatParts(ep) + " · " + anchorCity.name);
     var dateText = dateLabel(state.date);
     var subText = dateText + " · " + recommendationDuration() + " " + t("minutes");
-    if (rec.kind !== "overlap") subText += " · " + t("bestFallback");
     var sub = createElement("div", "recommendation-sub", subText);
     els.recommendation.append(main, sub);
   }
