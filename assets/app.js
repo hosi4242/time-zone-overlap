@@ -48,7 +48,8 @@
     downloadIcs: document.getElementById("download-ics"),
     actionStatus: document.getElementById("action-status"),
     reset: document.getElementById("reset-button"),
-    theme: document.getElementById("theme-toggle")
+    theme: document.getElementById("theme-toggle"),
+    language: document.getElementById("language-toggle")
   };
 
   function cityById(id) {
@@ -69,7 +70,7 @@
 
   function dateLabel(s) {
     var d = new Date(s + "T00:00:00Z");
-    return new Intl.DateTimeFormat("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric", timeZone: "UTC" }).format(d);
+    return new Intl.DateTimeFormat(language === "ko" ? "ko-KR" : "en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric", timeZone: "UTC" }).format(d);
   }
 
   function dateBounds() {
@@ -99,7 +100,7 @@
   function rangeText(range, city) {
     var s = formatParts(range.start);
     var e = formatParts(range.end);
-    var day = range.dayOffset === 0 ? "same day" : (range.dayOffset > 0 ? "+" + range.dayOffset + " day" + (range.dayOffset === 1 ? "" : "s") : range.dayOffset + " day" + (range.dayOffset === -1 ? "" : "s"));
+    var day = range.dayOffset === 0 ? t("sameDay") : (language === "ko" ? (range.dayOffset > 0 ? "+" + range.dayOffset + t("daySingular") : range.dayOffset + t("daySingular")) : (range.dayOffset > 0 ? "+" + range.dayOffset + " " + t("daySingular") + (range.dayOffset === 1 ? "" : "s") : range.dayOffset + " " + t("daySingular") + (range.dayOffset === -1 ? "" : "s")));
     if (range.endDateDiffers) return city.name + ": " + s + "–" + e + " (end date changes; " + day + ")";
     return city.name + ": " + s + "–" + e + " (" + day + ")";
   }
@@ -151,7 +152,7 @@
     while (box.firstChild) box.removeChild(box.firstChild);
     var choices = searchCities(query, current);
     if (!choices.length) {
-      box.appendChild(createElement("div", "city-option", "No matching city"));
+      box.appendChild(createElement("div", "city-option", t("noMatchingCity")));
       box.querySelector("div").setAttribute("role", "option");
       return;
     }
@@ -185,7 +186,7 @@
     if (!city) return;
     var duplicate = state.cities.some(function (c, i) { return i !== index && c.id === city.id; });
     if (duplicate) {
-      setActionStatus("That city is already selected.");
+      setActionStatus(t("alreadySelected"));
       return;
     }
     state.cities[index] = city;
@@ -206,9 +207,9 @@
       label.appendChild(createElement("div", "city-zone", city.tz));
       top.appendChild(label);
       if (state.cities.length > 2) {
-        var remove = createElement("button", "remove-city", "Remove");
+        var remove = createElement("button", "remove-city", t("remove"));
         remove.type = "button";
-        remove.setAttribute("aria-label", "Remove " + city.name);
+        remove.setAttribute("aria-label", t("remove") + " " + city.name);
         remove.addEventListener("click", function () {
           state.cities.splice(index, 1);
           state.schedules.splice(index, 1);
@@ -230,6 +231,7 @@
       input.setAttribute("aria-activedescendant", "");
       input.setAttribute("autocomplete", "off");
       input.setAttribute("spellcheck", "false");
+       input.setAttribute("placeholder", t("searchPlaceholder"));
       var box = createElement("div", "city-listbox");
       box.id = "city-listbox-" + index;
       box.setAttribute("role", "listbox");
@@ -268,21 +270,26 @@
 
       var schedule = state.schedules[index];
       var sg = createElement("div", "schedule-grid");
-      ["Start time", "End time"].forEach(function (labelText, part) {
+      [[t("startTime"), "start"], [t("endTime"), "end"]].forEach(function (item, part) {
+         var labelText = item[0];
         var group = createElement("div");
         group.appendChild(createElement("label", "", labelText));
         var inputTime = createElement("input", "time-input");
-        inputTime.type = "time";
-        inputTime.step = "900";
+        inputTime.type = "text";
+         inputTime.inputMode = "numeric";
+         inputTime.maxLength = 5;
+         inputTime.pattern = "\\d{2}:\\d{2}";
+         inputTime.placeholder = "HH:MM";
+        
         inputTime.value = timeValue(part === 0 ? schedule.start : schedule.end);
         inputTime.setAttribute("aria-label", city.name + " " + labelText);
         inputTime.addEventListener("change", function () {
           var value = parseTime(inputTime.value);
-          if (value === null) { inputTime.value = timeValue(schedule[part === 0 ? "start" : "end"]); return; }
+          if (value === null) { inputTime.value = timeValue(schedule[item[1]]); return; }
           schedule[part === 0 ? "start" : "end"] = value;
           if (schedule.start === schedule.end) {
             schedule.start = 540; schedule.end = 1080;
-            setActionStatus("Start and end cannot be identical; the schedule was reset to 09:00–18:00.");
+            setActionStatus(t("identicalReset"));
           }
           renderCities();
           commitState();
@@ -295,16 +302,16 @@
       var lunchInput = document.createElement("input");
       lunchInput.type = "checkbox";
       lunchInput.checked = schedule.lunch === 1;
-      lunchInput.setAttribute("aria-label", city.name + " lunch break");
+      lunchInput.setAttribute("aria-label", city.name + " " + t("lunchBreak"));
       lunchInput.addEventListener("change", function () { schedule.lunch = lunchInput.checked ? 1 : 0; commitState(); });
-      lunchLabel.append(lunchInput, createElement("span", "", "Lunch 12:00–13:00"));
+      lunchLabel.append(lunchInput, createElement("span", "", t("lunchLabel")));
       lunch.appendChild(lunchLabel);
       sg.appendChild(lunch);
       card.appendChild(sg);
       els.cityList.appendChild(card);
     });
     els.addCity.disabled = state.cities.length >= MAX_CITIES;
-    els.addCity.textContent = state.cities.length >= MAX_CITIES ? "Maximum 5 cities" : "+ Add city";
+    els.addCity.textContent = state.cities.length >= MAX_CITIES ? t("maxCities") : t("addCity");
   }
 
   function addCity() {
@@ -355,7 +362,7 @@
       renderTable();
       els.summaryLive.textContent = TZO.summaryText(result, { locale: "en-US", hourFormat: state.hourFormat });
     } catch (error) {
-      setActionStatus("Unable to calculate this selection: " + error.message);
+      setActionStatus(t("unableCalculate") + error.message);
     }
   }
 
@@ -363,11 +370,11 @@
     while (els.notices.firstChild) els.notices.removeChild(els.notices.firstChild);
     result.sameTimezonePairs.forEach(function (pair) {
       var a = state.cities[pair.a], b = state.cities[pair.b];
-      var text = pair.reason === "same-id" ? a.name + " and " + b.name + " use the same time zone." : a.name + " and " + b.name + " have the same UTC offset throughout this window.";
+      var text = pair.reason === "same-id" ? a.name + " " + t("sameTimezone") + " " + b.name + " " + t("sameZone") : a.name + " " + t("sameTimezone") + " " + b.name + " " + t("sameOffset");
       els.notices.appendChild(createElement("div", "notice", text));
     });
     result.warnings.forEach(function (warning) {
-      if (warning.code === "non-15-minute-offset") els.notices.appendChild(createElement("div", "notice warning", "This time zone has a non-15-minute offset in the displayed window; the timeline still uses the tool's 15-minute calculation grid."));
+      if (warning.code === "non-15-minute-offset") els.notices.appendChild(createElement("div", "notice warning", t("non15")));
     });
   }
 
@@ -380,20 +387,20 @@
     while (els.recommendation.firstChild) els.recommendation.removeChild(els.recommendation.firstChild);
     if (!result.recommendation) {
       els.fitBadge.className = "status-badge fallback";
-      els.fitBadge.textContent = "No window";
-      els.recommendation.appendChild(createElement("div", "recommendation-main", "No valid meeting window is available in this search window."));
+      els.fitBadge.textContent = t("noWindow");
+      els.recommendation.appendChild(createElement("div", "recommendation-main", t("noValidWindow")));
       els.google.href = "#";
       return;
     }
     var rec = result.recommendation;
     els.fitBadge.className = "status-badge " + (rec.kind === "overlap" ? "success" : "fallback");
-    els.fitBadge.textContent = rec.kind === "overlap" ? "Fits" : "Fallback";
+    els.fitBadge.textContent = rec.kind === "overlap" ? t("fits") : t("fallback");
     var anchorCity = state.cities[0];
     var ap = TZO.localParts(rec.startUtc, anchorCity.tz);
     var ep = TZO.localParts(rec.endUtc, anchorCity.tz);
     var main = createElement("div", "recommendation-main", formatParts(ap) + "–" + formatParts(ep) + " · " + anchorCity.name);
     var dateText = dateLabel(state.date);
-    var sub = createElement("div", "recommendation-sub", dateText + " · " + recommendationDuration() + " minutes · " + (rec.kind === "overlap" ? "All cities are working." : "Best available fallback according to the scoring rules."));
+    var sub = createElement("div", "recommendation-sub", dateText + " · " + recommendationDuration() + " minutes · " + (rec.kind === "overlap" ? t("allWorking") : t("bestFallback")));
     els.recommendation.append(main, sub);
     var per = createElement("div", "per-city-list");
     rec.perCity.forEach(function (range, i) {
@@ -408,12 +415,12 @@
   }
 
   function buildCalendarDescription(rec) {
-    return state.cities.map(function (city, i) { return rangeText(rec.perCity[i], city); }).join("\n") + "\n\n" + (rec.kind === "overlap" ? "Recommended overlap." : "Recommended fallback window.");
+    return state.cities.map(function (city, i) { return rangeText(rec.perCity[i], city); }).join("\n") + "\n\n" + (rec.kind === "overlap" ? t("recommendedOverlap") : t("recommendedFallback"));
   }
 
   function buildTimelineAxis() {
     var axis = createElement("div", "axis");
-    axis.appendChild(createElement("div", "axis-label", "Anchor local time"));
+    axis.appendChild(createElement("div", "axis-label", t("anchorLocal")));
     var track = createElement("div", "axis-track");
     var slots = result.gridSlotCount;
     for (var i = 0; i <= slots; i += 1) {
@@ -447,7 +454,7 @@
       if (before !== after) {
         var marker = createElement("div", "dst-marker");
         marker.style.left = ((i / result.gridSlotCount) * 100) + "%";
-        marker.appendChild(createElement("span", "", "Clock change"));
+        marker.appendChild(createElement("span", "", t("clockChange")));
         track.appendChild(marker);
       }
     }
@@ -477,26 +484,26 @@
       inner.appendChild(row);
     });
     var legend = createElement("div", "timeline-legend");
-    var l1 = createElement("span", "legend-item"); l1.append(createElement("i", "legend-swatch overlap"), createElement("span", "", "Overlap"));
-    var l2 = createElement("span", "legend-item"); l2.append(createElement("i", "legend-swatch"), createElement("span", "", "Working"));
-    var l3 = createElement("span", "legend-item"); l3.append(createElement("i", "legend-swatch muted"), createElement("span", "", "Outside working hours"));
+    var l1 = createElement("span", "legend-item"); l1.append(createElement("i", "legend-swatch overlap"), createElement("span", "", t("legendOverlap")));
+    var l2 = createElement("span", "legend-item"); l2.append(createElement("i", "legend-swatch"), createElement("span", "", t("legendWorking")));
+    var l3 = createElement("span", "legend-item"); l3.append(createElement("i", "legend-swatch muted"), createElement("span", "", t("legendOutside")));
     legend.append(l1, l2, l3);
     inner.appendChild(legend);
     els.timeline.appendChild(inner);
-    if (result.nowSlotIndex >= 0) els.currentTime.textContent = "NOW is inside the displayed search window.";
-    else els.currentTime.textContent = "Current time is outside the selected date.";
+    if (result.nowSlotIndex >= 0) els.currentTime.textContent = t("nowInside");
+    else els.currentTime.textContent = t("nowOutside");
   }
 
   function renderTable() {
     while (els.tableBody.firstChild) els.tableBody.removeChild(els.tableBody.firstChild);
     if (!result.overlapRanges.length) {
       var tr = document.createElement("tr");
-      var td = createElement("td", "", "No full overlap range is available. The recommendation above is the fallback window.");
+      var td = createElement("td", "", t("noFullOverlap"));
       td.colSpan = 2; tr.appendChild(td); els.tableBody.appendChild(tr); return;
     }
     result.overlapRanges.forEach(function (range, index) {
       var tr = document.createElement("tr");
-      var td1 = createElement("td", "", "Range " + (index + 1) + " · " + Math.round((range.endUtc - range.startUtc) / 60000) + " min");
+      var td1 = createElement("td", "", t("range") + " " + (index + 1) + " · " + Math.round((range.endUtc - range.startUtc) / 60000) + " " + t("minutes"));
       var td2 = document.createElement("td");
       state.cities.forEach(function (city, cityIndex) {
         var r = range.perCity[cityIndex];
@@ -535,11 +542,11 @@
     if (!result || !result.recommendation) return;
     var rec = result.recommendation;
     var text = (rec.kind === "overlap" ? "Recommended overlap" : "Recommended fallback") + "\n" + state.cities[0].name + ": " + formatParts(TZO.localParts(rec.startUtc, state.cities[0].tz)) + "–" + formatParts(TZO.localParts(rec.endUtc, state.cities[0].tz)) + "\n" + state.cities.map(function (city, i) { return rangeText(rec.perCity[i], city); }).join("\n");
-    copyText(text).then(function (ok) { setActionStatus(ok ? "Result copied." : "Copy failed. Select the text manually from View as table."); });
+    copyText(text).then(function (ok) { setActionStatus(ok ? t("resultCopied") : t("copyFailedTable")); });
   }
 
   function copyLink() {
-    copyText(location.href).then(function (ok) { setActionStatus(ok ? "Share link copied." : "Copy failed. You can copy the address bar URL manually."); });
+    copyText(location.href).then(function (ok) { setActionStatus(ok ? t("shareCopied") : t("copyFailedUrl")); });
   }
 
   function downloadIcs() {
@@ -557,7 +564,7 @@
     link.click();
     link.remove();
     setTimeout(function () { URL.revokeObjectURL(url); }, 0);
-    setActionStatus("Calendar file downloaded.");
+    setActionStatus(t("calendarDownloaded"));
   }
 
   function loadTheme() {
@@ -565,14 +572,14 @@
     try { theme = localStorage.getItem("tzo-theme"); } catch (e) {}
     if (theme === "dark" || theme === "light") document.documentElement.dataset.theme = theme;
     else delete document.documentElement.dataset.theme;
-    els.theme.textContent = theme === "dark" ? "Light" : "Dark";
+    els.theme.textContent = theme === "dark" ? t("themeLight") : t("themeDark");
   }
 
   function toggleTheme() {
     var current = document.documentElement.dataset.theme;
     var next = current === "dark" ? "light" : "dark";
     document.documentElement.dataset.theme = next;
-    els.theme.textContent = next === "dark" ? "Light" : "Dark";
+    els.theme.textContent = next === "dark" ? t("themeLight") : t("themeDark");
     try { localStorage.setItem("tzo-theme", next); } catch (e) {}
   }
 
@@ -620,12 +627,15 @@
     els.copyLink.addEventListener("click", copyLink);
     els.downloadIcs.addEventListener("click", downloadIcs);
     els.theme.addEventListener("click", toggleTheme);
+    els.language.addEventListener("click", toggleLanguage);
     document.addEventListener("click", function (event) {
       if (activeCombobox && !activeCombobox.contains(event.target)) closeCombobox(activeCombobox);
     });
   }
 
+  loadLanguage();
   loadTheme();
+  applyLanguage();
   var detectedTz = TZO.resolveTimeZone(Intl.DateTimeFormat().resolvedOptions().timeZone) || "UTC";
   state = loadFormatPreference(TZO.parseUrlState(location.search, { cities: CITIES, nowMs: NOW_MS, detectedTz: detectedTz }));
   bindGlobalEvents();
