@@ -286,3 +286,11 @@ th { color: var(--color-muted); font-size: .74rem; }
   .hero { margin-bottom: 26px; }
   .panel { border-radius: 15px; }
 }
+
+/* Combined recommendation and timeline panel. */
+.combined-panel .result-heading { margin-bottom: 12px; }
+.combined-panel .recommendation { text-align: center; justify-items: center; }
+.combined-panel .recommendation-main { text-align: center; }
+.combined-panel .recommendation-sub { text-align: center; }
+.combined-panel .timeline-heading { margin-top: 28px; margin-bottom: 12px; }
+.combined-panel .timeline-heading h2 { font-size: 1.05rem; }
