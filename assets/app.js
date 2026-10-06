@@ -146,7 +146,7 @@
       var bq = b.id === currentCity.id ? -1 : (q ? (bb.indexOf(q) === 0 ? 0 : bb.indexOf(q) >= 0 ? 1 : 2) : 2);
       return aq - bq || b.rank - a.rank || a.name.localeCompare(b.name);
     });
-    return candidates.slice(0, 12);
+    return candidates;
   }
 
   function updateListbox(card, index, query) {
@@ -259,6 +259,7 @@
           card.dataset.activeIndex = String(current);
           opts.forEach(function (o, i) { o.classList.toggle("active", i === current); o.setAttribute("aria-selected", i === current ? "true" : "false"); });
           input.setAttribute("aria-activedescendant", opts[current].id);
+          opts[current].scrollIntoView({ block: "nearest" });
         }
         if (event.key === "Enter") {
           event.preventDefault();
