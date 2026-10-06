@@ -132,15 +132,18 @@
   function searchCities(query, currentCity) {
     var q = String(query || "").trim().toLowerCase();
     var candidates = CITIES.filter(function (city) {
-      if (city.id === currentCity.id) return false;
+      var selectedElsewhere = state.cities.some(function (selected) {
+        return selected.id === city.id && selected.id !== currentCity.id;
+      });
+      if (selectedElsewhere) return false;
       var hay = [city.name, city.country, city.tz].concat(city.aliases || []).join(" ").toLowerCase();
       return !q || hay.indexOf(q) >= 0;
     });
     candidates.sort(function (a, b) {
       var aa = [a.name.toLowerCase()].concat(a.aliases || []).join(" ");
       var bb = [b.name.toLowerCase()].concat(b.aliases || []).join(" ");
-      var aq = q ? (aa.indexOf(q) === 0 ? 0 : aa.indexOf(q) >= 0 ? 1 : 2) : 2;
-      var bq = q ? (bb.indexOf(q) === 0 ? 0 : bb.indexOf(q) >= 0 ? 1 : 2) : 2;
+      var aq = a.id === currentCity.id ? -1 : (q ? (aa.indexOf(q) === 0 ? 0 : aa.indexOf(q) >= 0 ? 1 : 2) : 2);
+      var bq = b.id === currentCity.id ? -1 : (q ? (bb.indexOf(q) === 0 ? 0 : bb.indexOf(q) >= 0 ? 1 : 2) : 2);
       return aq - bq || b.rank - a.rank || a.name.localeCompare(b.name);
     });
     return candidates.slice(0, 12);
