@@ -22,22 +22,16 @@
 
   <main id="main" class="page-shell">
     <section class="hero" aria-labelledby="page-title">
-      <p class="eyebrow" data-i18n="heroEyebrow">TIME ZONES · WORKING HOURS · DST AWARE</p>
       <h1 id="page-title" data-i18n="heroTitle">Find a time that works for everyone.</h1>
-      <p class="hero-copy" data-i18n="heroCopy">Compare working hours across cities and find the best overlap, even when daylight saving time changes the clock.</p>
     </section>
 
     <section class="panel controls-panel" aria-labelledby="settings-title">
       <div class="section-heading">
-        <div>
-          <h2 id="settings-title" data-i18n="meetingSettings">Meeting settings</h2>
-          <p data-i18n="meetingSettingsCopy">Choose cities, working hours, date, and meeting length.</p>
-        </div>
+        <div><h2 id="settings-title" data-i18n="meetingSettings">Meeting settings</h2></div>
         <button id="reset-button" class="text-button" type="button" data-i18n="reset">Reset</button>
       </div>
 
       <div id="city-list" class="city-list"></div>
-      <button id="add-city" class="secondary-button add-city" type="button">+ Add city</button>
 
       <div class="settings-grid">
         <div class="field-group">
@@ -67,19 +61,13 @@
 
     <section class="panel result-panel" aria-labelledby="result-title">
       <div class="section-heading result-heading">
-        <div>
-          <p class="eyebrow" data-i18n="recommendationEyebrow">RECOMMENDATION</p>
-          <h2 id="result-title" data-i18n="bestMeetingTime">Best meeting time</h2>
-        </div>
-        <span id="fit-badge" class="status-badge" data-i18n="calculating">Calculating</span>
+        <div><h2 id="result-title" data-i18n="bestMeetingTime">Best meeting time</h2></div>
       </div>
       <div id="recommendation" class="recommendation"></div>
       <div id="summary-live" class="sr-live" aria-live="polite" aria-atomic="true"></div>
       <div class="action-row">
         <button id="copy-result" class="primary-button" type="button" data-i18n="copyResult">Copy result</button>
         <button id="copy-link" class="secondary-button" type="button" data-i18n="copyLink">Copy link</button>
-        <a id="google-calendar" class="secondary-button button-link" href="#" target="_blank" rel="noopener noreferrer" data-i18n="googleCalendar">Add to Google Calendar</a>
-        <button id="download-ics" class="secondary-button" type="button" data-i18n="downloadIcs">Download .ics</button>
       </div>
       <p id="action-status" class="action-status" aria-live="polite"></p>
     </section>
@@ -87,12 +75,9 @@
     <section class="panel timeline-panel" aria-labelledby="timeline-title">
       <div class="section-heading">
         <div>
-          <p class="eyebrow" data-i18n="utcAxis">UTC AXIS</p>
           <h2 id="timeline-title" data-i18n="timelineTitle">Working-hour timeline</h2>
-          <p data-i18n="timelineCopy">The anchor city is the first city. The axis follows its local date while every row shows its own local time.</p>
         </div>
       </div>
-      <div id="current-time-note" class="current-time-note"></div>
       <div id="timeline" class="timeline" aria-label="Working-hour timeline"></div>
       <details class="table-details">
         <summary data-i18n="viewTable">View as table</summary>
@@ -108,9 +93,6 @@
 
 /main>
 
-  <footer class="site-footer">
-    <p data-i18n="footerCopy">Time Zone Overlap Finder runs in your browser. No account or server-side calculation is required.</p>
-  </footer>
 
   <script src="/assets/engine.js" defer></script>
   <script src="/assets/cities.js" defer></script>
