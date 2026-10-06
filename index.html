@@ -59,26 +59,22 @@
 
     <section class="notice-stack" id="notice-stack" aria-live="polite"></section>
 
-    <section class="panel result-panel" aria-labelledby="result-title">
+    <section class="panel timeline-panel combined-panel" aria-labelledby="result-title">
       <div class="section-heading result-heading">
-        <div><h2 id="result-title" data-i18n="bestMeetingTime">Best meeting time</h2></div>
+        <div><h2 id="result-title" data-i18n="bestMeetingTime">Best overlap time</h2></div>
       </div>
       <div id="recommendation" class="recommendation"></div>
       <div id="summary-live" class="sr-live" aria-live="polite" aria-atomic="true"></div>
-      <div class="action-row">
+<div class="action-row">
         <button id="copy-result" class="primary-button" type="button" data-i18n="copyResult">Copy result</button>
         <button id="copy-link" class="secondary-button" type="button" data-i18n="copyLink">Copy link</button>
       </div>
       <p id="action-status" class="action-status" aria-live="polite"></p>
-    </section>
-
-    <section class="panel timeline-panel" aria-labelledby="timeline-title">
-      <div class="section-heading">
-        <div>
-          <h2 id="timeline-title" data-i18n="timelineTitle">Working-hour timeline</h2>
-        </div>
+    
+      <div class="section-heading timeline-heading">
+        <div><h2 id="timeline-title" data-i18n="timelineTitle">Overlap timeline</h2></div>
       </div>
-      <div id="timeline" class="timeline" aria-label="Working-hour timeline"></div>
+      <div id="timeline" class="timeline" aria-label="Overlap timeline"></div>
       <details class="table-details">
         <summary data-i18n="viewTable">View as table</summary>
         <div class="table-scroll">
@@ -90,7 +86,6 @@
         </div>
       </details>
     </section>
-
 /main>
 
 
