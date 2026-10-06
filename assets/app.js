@@ -404,11 +404,12 @@
 
   function buildLocalTimeScale(city) {
     var scale = createElement("div", "row-time-scale");
-    var points = 5;
+    var points = 13;
     for (var i = 0; i < points; i += 1) {
-      var slotIndex = Math.round((result.gridSlotCount * i) / (points - 1));
+      var slotIndex = Math.min(result.gridSlotCount, i * 8);
       var instant = result.baseStartUtc + slotIndex * TZO.STEP_MS;
-      var tick = createElement("span", "row-time-tick", formatParts(TZO.localParts(instant, city.tz)));
+      var parts = TZO.localParts(instant, city.tz);
+      var tick = createElement("span", "row-time-tick", String(parts.hour));
       tick.style.left = ((i / (points - 1)) * 100) + "%";
       if (i === 0) tick.classList.add("first");
       if (i === points - 1) tick.classList.add("last");
@@ -481,11 +482,16 @@
     }
     result.overlapRanges.forEach(function (range, index) {
       var tr = document.createElement("tr");
-      var td1 = createElement("td", "", t("range") + " " + (index + 1) + " · " + Math.round((range.endUtc - range.startUtc) / 60000) + " " + t("minutes"));
-      var td2 = document.createElement("td");
+      var duration = Math.round((range.endUtc - range.startUtc) / 60000);
+      var td1 = createElement("td");
+      td1.appendChild(createElement("strong", "table-range-title", t("range") + " " + (index + 1)));
+      td1.appendChild(createElement("span", "table-range-duration", duration + " " + t("minutes")));
+      var td2 = createElement("td", "table-city-times");
       state.cities.forEach(function (city, cityIndex) {
         var r = range.perCity[cityIndex];
-        var line = createElement("div", "", rangeText(r, city));
+        var line = createElement("div", "table-city-time");
+        line.appendChild(createElement("strong", "", city.name));
+        line.appendChild(createElement("span", "", formatParts(r.start) + "–" + formatParts(r.end)));
         td2.appendChild(line);
       });
       tr.append(td1, td2); els.tableBody.appendChild(tr);
