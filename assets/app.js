@@ -7,7 +7,7 @@
 
   var NOW_MS = Date.now();
   var DEFAULT_SCHEDULE = { start: 540, end: 1080, lunch: 0 };
-  var MAX_CITIES = 5;
+  var MAX_CITIES = 3;
   var state;
   var result;
   var commitTimer = null;
@@ -32,7 +32,6 @@
 
   var els = {
     cityList: document.getElementById("city-list"),
-    addCity: document.getElementById("add-city"),
     date: document.getElementById("date-input"),
     dateNote: document.getElementById("date-note"),
     recommendation: document.getElementById("recommendation"),
@@ -314,18 +313,6 @@
       card.appendChild(sg);
       els.cityList.appendChild(card);
     });
-    els.addCity.disabled = state.cities.length >= MAX_CITIES;
-    els.addCity.textContent = state.cities.length >= MAX_CITIES ? t("maxCities") : t("addCity");
-  }
-
-  function addCity() {
-    if (state.cities.length >= MAX_CITIES) return;
-    var candidate = CITIES.find(function (city) { return !state.cities.some(function (x) { return x.id === city.id; }); });
-    if (!candidate) return;
-    state.cities.push(candidate);
-    state.schedules.push({ start: DEFAULT_SCHEDULE.start, end: DEFAULT_SCHEDULE.end, lunch: 0 });
-    renderCities();
-    commitState();
   }
 
   function setSegmentButtons(selector, attr, value) {
@@ -408,7 +395,6 @@
 
   function buildTimelineAxis() {
     var axis = createElement("div", "axis");
-    axis.appendChild(createElement("div", "axis-label", t("anchorLocal")));
     var track = createElement("div", "axis-track");
     var slots = result.gridSlotCount;
     for (var i = 0; i <= slots; i += 1) {
@@ -494,8 +480,6 @@
     legend.append(l1, l2, l3);
     inner.appendChild(legend);
     els.timeline.appendChild(inner);
-    if (result.nowSlotIndex >= 0) els.currentTime.textContent = t("nowInside");
-    else els.currentTime.textContent = t("nowOutside");
   }
 
   function renderTable() {
@@ -589,7 +573,6 @@
   }
 
   function bindGlobalEvents() {
-    els.addCity.addEventListener("click", addCity);
     els.reset.addEventListener("click", resetState);
     els.date.addEventListener("change", function () {
       var checked = TZO.validateDate(els.date.value, { nowMs: NOW_MS });
@@ -623,6 +606,7 @@
   applyLanguage();
   var detectedTz = TZO.resolveTimeZone(Intl.DateTimeFormat().resolvedOptions().timeZone) || "UTC";
   state = loadFormatPreference(TZO.parseUrlState(location.search, { cities: CITIES, nowMs: NOW_MS, detectedTz: detectedTz }));
+  if (state.cities.length > MAX_CITIES) { state.cities = state.cities.slice(0, MAX_CITIES); state.schedules = state.schedules.slice(0, MAX_CITIES); }
   bindGlobalEvents();
   renderCities();
   recompute(false);
