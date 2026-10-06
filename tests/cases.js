@@ -1,0 +1,1 @@
+(function(root){"use strict";if(typeof module!=="undefined"&&module.exports){module.exports=[].concat(require("./cases/core.js"),require("./cases/url.js"),require("./cases/ics.js"),require("./cases/random.js"));}else{var p=root.TZO_CASE_PARTS||[];root.TZO_CASES=[];for(var i=0;i<p.length;i++)for(var j=0;j<p[i].length;j++)root.TZO_CASES.push(p[i][j]);}})(globalThis);
