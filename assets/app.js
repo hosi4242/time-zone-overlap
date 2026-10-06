@@ -496,6 +496,7 @@
       label.appendChild(createElement("span", "", city.tz));
       row.appendChild(label);
       var trackWrap = createElement("div", "row-track");
+      trackWrap.appendChild(buildLocalTimeScale(city));
       var track = createElement("div", "slot-track");
       for (var i = 0; i < result.gridSlotCount; i += 1) {
         var slot = createElement("div", slotClasses(i, cityIndex));
