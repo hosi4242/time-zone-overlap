@@ -223,15 +223,19 @@ th { color: var(--color-muted); font-size: .74rem; }
 }
 
 @media (max-width: 420px) {
-  .header-inner { min-height: 60px; }
-  .brand { font-size: .88rem; }
-  h1 { font-size: 2rem; }
-  .header-actions { right: 0; gap: 5px; }
-  .icon-button { padding-inline: 9px; font-size: .78rem; }
+  .header-inner { min-height: 60px; justify-content: flex-start; padding-right: 94px; }
+  .brand { font-size: .88rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .header-actions { right: 0; gap: 4px; }
+  .icon-button { padding-inline: 8px; font-size: .76rem; min-height: 40px; }
   .hero-copy { font-size: .94rem; }
-  .section-heading { gap: 8px; }
+  .section-heading { flex-direction: column; align-items: center; gap: 8px; }
+  .controls-panel .section-heading > div,
+  .result-heading > div { width: 100%; }
+  .controls-panel .section-heading .text-button { align-self: flex-end; min-height: 34px; padding: 5px 9px; }
+  .result-heading .status-badge { align-self: center; }
   .schedule-grid { gap: 8px; }
-  .action-row > * { flex-basis: 100%; }
+  .action-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; margin-top: 14px; }
+  .action-row > * { min-width: 0; min-height: 38px; padding: 6px 7px; font-size: .72rem; line-height: 1.2; white-space: normal; text-align: center; }
 }
 
 @media (prefers-reduced-motion: reduce) {
