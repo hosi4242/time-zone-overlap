@@ -83,7 +83,7 @@ a { color: var(--color-primary); }
 .skip-link:focus { top: 12px; }
 
 .site-header { border-bottom: 1px solid var(--color-border); background: color-mix(in srgb, var(--color-surface) 94%, transparent); }
-.header-inner, .page-shell, .site-footer { width: min(1120px, calc(100% - 32px)); margin-inline: auto; }
+.header-inner, .page-shell, .site-footer { width: min(1040px, calc(100% - 32px)); margin-inline: auto; }
 .header-inner { min-height: 68px; display: flex; align-items: center; justify-content: center; gap: 16px; position: relative; }
 .brand { color: var(--color-text); text-decoration: none; font-weight: 800; letter-spacing: -.025em; }
 .header-actions { display: flex; gap: 8px; position: absolute; right: 0; top: 50%; transform: translateY(-50%); }
@@ -100,7 +100,8 @@ h2 { margin-bottom: 4px; font-size: 1.2rem; letter-spacing: -.02em; }
 
 .panel { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 18px; box-shadow: var(--shadow); padding: 24px; margin: 0 auto 18px; }
 .section-heading { display: flex; align-items: center; justify-content: center; gap: 18px; margin-bottom: 20px; text-align: center; }
-.section-heading p:not(.eyebrow) { color: var(--color-muted); margin: 0; font-size: .92rem; }\n.section-heading > div { margin-inline: auto; }
+.section-heading p:not(.eyebrow) { color: var(--color-muted); margin: 0; font-size: .92rem; }
+.section-heading > div { margin-inline: auto; }
 
 .city-list { display: grid; gap: 14px; text-align: left; }
 .city-card { border: 1px solid var(--color-border); border-radius: 14px; padding: 16px; position: relative; background: color-mix(in srgb, var(--color-surface) 96%, var(--color-bg)); }
@@ -211,7 +212,9 @@ th { color: var(--color-muted); font-size: .74rem; }
 @media (max-width: 420px) {
   .header-inner { min-height: 60px; }
   .brand { font-size: .88rem; }
-  h1 { font-size: 2rem; }\n  .header-actions { right: 0; gap: 5px; }\n  .icon-button { padding-inline: 9px; font-size: .78rem; }
+  h1 { font-size: 2rem; }
+  .header-actions { right: 0; gap: 5px; }
+  .icon-button { padding-inline: 9px; font-size: .78rem; }
   .hero-copy { font-size: .94rem; }
   .section-heading { gap: 8px; }
   .schedule-grid { gap: 8px; }
