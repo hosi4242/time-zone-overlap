@@ -55,6 +55,15 @@
   function cityIndex(city) {
     return state.cities.indexOf(city);
   }
+\n  function continentForRegion(region) {
+    var map = { na: "North America", sa: "South America", eu: "Europe", me: "Asia", af: "Africa", as: "Asia", oc: "Oceania" };
+    return map[region] || "World";
+  }
+
+  function cityLocationLabel(city) {
+    return continentForRegion(city.region) + "/" + city.country;
+  }
+
 
   function nowIsoDate() {
     var d = new Date(NOW_MS);
@@ -118,7 +127,7 @@
     option.setAttribute("role", "option");
     option.setAttribute("aria-selected", active ? "true" : "false");
     var strong = createElement("strong", "", city.name);
-    var meta = createElement("span", "", city.country + " · " + city.tz);
+    var meta = createElement("span", "", cityLocationLabel(city));
     option.append(strong, meta);
     option.dataset.cityId = city.id;
     return option;
@@ -202,7 +211,7 @@
       top.appendChild(createElement("span", "city-number", String(index + 1)));
       var label = createElement("div", "city-label");
       label.appendChild(createElement("div", "city-name", city.name));
-      label.appendChild(createElement("div", "city-zone", city.tz));
+      label.appendChild(createElement("div", "city-zone", cityLocationLabel(city)));
       top.appendChild(label);
       if (state.cities.length > 2) {
         var remove = createElement("button", "remove-city", t("remove"));
