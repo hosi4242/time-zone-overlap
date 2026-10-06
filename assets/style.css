@@ -294,3 +294,25 @@ th { color: var(--color-muted); font-size: .74rem; }
 .combined-panel .recommendation-sub { text-align: center; }
 .combined-panel .timeline-heading { margin-top: 28px; margin-bottom: 12px; }
 .combined-panel .timeline-heading h2 { font-size: 1.05rem; }
+
+
+/* Compact two-hour local-time scale and refined table presentation. */
+.row-time-scale { height: 16px; }
+.row-time-tick { font-variant-numeric: tabular-nums; font-size: .62rem; }
+.table-details { border-top: 1px solid var(--color-border); padding-top: 4px; }
+.table-details summary { padding: 4px 0; }
+.table-scroll { border: 1px solid var(--color-border); border-radius: 10px; background: var(--color-bg); }
+#overlap-table { font-variant-numeric: tabular-nums; }
+#overlap-table th { background: color-mix(in srgb, var(--color-border) 18%, var(--color-bg)); }
+#overlap-table td { padding: 10px; }
+.table-range-title, .table-range-duration { display: block; }
+.table-range-title { font-size: .84rem; }
+.table-range-duration { margin-top: 2px; color: var(--color-muted); font-size: .75rem; }
+.table-city-times { display: grid; gap: 5px; }
+.table-city-time { display: grid; grid-template-columns: minmax(90px, .8fr) 1fr; gap: 8px; align-items: baseline; }
+.table-city-time strong { font-size: .8rem; }
+.table-city-time span { color: var(--color-muted); font-size: .8rem; }
+@media (max-width: 600px) {
+  .table-city-time { grid-template-columns: minmax(78px, .75fr) 1fr; gap: 6px; }
+  .table-city-time strong, .table-city-time span { font-size: .74rem; }
+}
