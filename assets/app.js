@@ -457,6 +457,21 @@
     return cls;
   }
 
+  function buildLocalTimeScale(city) {
+    var scale = createElement("div", "row-time-scale");
+    var points = 5;
+    for (var i = 0; i < points; i += 1) {
+      var slotIndex = Math.round((result.gridSlotCount * i) / (points - 1));
+      var instant = result.baseStartUtc + slotIndex * TZO.STEP_MS;
+      var tick = createElement("span", "row-time-tick", formatParts(TZO.localParts(instant, city.tz)));
+      tick.style.left = ((i / (points - 1)) * 100) + "%";
+      if (i === 0) tick.classList.add("first");
+      if (i === points - 1) tick.classList.add("last");
+      scale.appendChild(tick);
+    }
+    return scale;
+  }
+
   function addDstMarkers(track, city) {
     for (var i = 1; i < result.slots.length; i += 1) {
       var before = TZO.offsetMs(result.slots[i - 1].startUtc, city.tz);
