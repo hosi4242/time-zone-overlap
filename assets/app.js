@@ -403,15 +403,8 @@
     if (rec.kind !== "overlap") subText += " · " + t("bestFallback");
     var sub = createElement("div", "recommendation-sub", subText);
     els.recommendation.append(main, sub);
-    var per = createElement("div", "per-city-list");
-    rec.perCity.forEach(function (range, i) {
-      var card = createElement("div", "per-city");
-      card.appendChild(createElement("strong", "", state.cities[i].name));
-      card.appendChild(createElement("span", "", rangeText(range, state.cities[i])));
-      per.appendChild(card);
-    });
-    els.recommendation.appendChild(per);
   }
+
 
   function buildTimelineAxis() {
     var axis = createElement("div", "axis");
