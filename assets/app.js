@@ -242,7 +242,11 @@
       wrap.append(input, box);
       card.appendChild(wrap);
 
-      input.addEventListener("focus", function () { openCombobox(card, index); });
+      input.addEventListener("focus", function () {
+        input.select();
+        openCombobox(card, index);
+        updateListbox(card, index, "");
+      });
       input.addEventListener("input", function () {
         if (!searchTimers.has(index)) searchTimers.set(index, null);
         if (searchTimers.get(index)) clearTimeout(searchTimers.get(index));
@@ -404,7 +408,9 @@
     var ep = TZO.localParts(rec.endUtc, anchorCity.tz);
     var main = createElement("div", "recommendation-main", formatParts(ap) + "–" + formatParts(ep) + " · " + anchorCity.name);
     var dateText = dateLabel(state.date);
-    var sub = createElement("div", "recommendation-sub", dateText + " · " + recommendationDuration() + " " + t("minutes") + " · " + (rec.kind === "overlap" ? t("allWorking") : t("bestFallback")));
+    var subText = dateText + " · " + recommendationDuration() + " " + t("minutes");
+    if (rec.kind !== "overlap") subText += " · " + t("bestFallback");
+    var sub = createElement("div", "recommendation-sub", subText);
     els.recommendation.append(main, sub);
     var per = createElement("div", "per-city-list");
     rec.perCity.forEach(function (range, i) {
