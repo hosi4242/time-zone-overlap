@@ -596,6 +596,20 @@
   applyLanguage();
   var detectedTz = TZO.resolveTimeZone(Intl.DateTimeFormat().resolvedOptions().timeZone) || "UTC";
   state = loadFormatPreference(TZO.parseUrlState(location.search, { cities: CITIES, nowMs: NOW_MS, detectedTz: detectedTz }));
+  if (!state.cities || !state.cities.length) {
+    var detectedCity = null;
+    for (var ci = 0; ci < CITIES.length; ci += 1) {
+      if (CITIES[ci].tz === detectedTz) { detectedCity = CITIES[ci]; break; }
+    }
+    var london = cityById("london");
+    var firstCity = detectedCity || CITIES[0];
+    var secondCity = london && london.id !== firstCity.id ? london : CITIES.find(function (city) { return city.id !== firstCity.id; });
+    state.cities = [firstCity, secondCity || firstCity];
+    state.schedules = [Object.assign({}, DEFAULT_SCHEDULE), Object.assign({}, DEFAULT_SCHEDULE)];
+  }
+  if (!state.schedules || state.schedules.length < state.cities.length) {
+    while (state.schedules.length < state.cities.length) state.schedules.push(Object.assign({}, DEFAULT_SCHEDULE));
+  }
   if (state.cities.length > MAX_CITIES) { state.cities = state.cities.slice(0, MAX_CITIES); state.schedules = state.schedules.slice(0, MAX_CITIES); }
   bindGlobalEvents();
   renderCities();
