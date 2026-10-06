@@ -36,16 +36,12 @@
     date: document.getElementById("date-input"),
     dateNote: document.getElementById("date-note"),
     recommendation: document.getElementById("recommendation"),
-    fitBadge: document.getElementById("fit-badge"),
     summaryLive: document.getElementById("summary-live"),
     timeline: document.getElementById("timeline"),
     tableBody: document.querySelector("#overlap-table tbody"),
-    currentTime: document.getElementById("current-time-note"),
     notices: document.getElementById("notice-stack"),
     copyResult: document.getElementById("copy-result"),
     copyLink: document.getElementById("copy-link"),
-    google: document.getElementById("google-calendar"),
-    downloadIcs: document.getElementById("download-ics"),
     actionStatus: document.getElementById("action-status"),
     reset: document.getElementById("reset-button"),
     theme: document.getElementById("theme-toggle"),
@@ -394,15 +390,10 @@
   function renderResult() {
     while (els.recommendation.firstChild) els.recommendation.removeChild(els.recommendation.firstChild);
     if (!result.recommendation) {
-      els.fitBadge.className = "status-badge fallback";
-      els.fitBadge.textContent = t("noWindow");
       els.recommendation.appendChild(createElement("div", "recommendation-main", t("noValidWindow")));
-      els.google.href = "#";
       return;
     }
     var rec = result.recommendation;
-    els.fitBadge.className = "status-badge " + (rec.kind === "overlap" ? "success" : "fallback");
-    els.fitBadge.textContent = rec.kind === "overlap" ? t("fits") : t("fallback");
     var anchorCity = state.cities[0];
     var ap = TZO.localParts(rec.startUtc, anchorCity.tz);
     var ep = TZO.localParts(rec.endUtc, anchorCity.tz);
@@ -420,12 +411,6 @@
       per.appendChild(card);
     });
     els.recommendation.appendChild(per);
-    var description = buildCalendarDescription(rec);
-    els.google.href = TZO.buildGoogleCalUrl({ title: t("calendarTitle"), description: description, startUtc: rec.startUtc, endUtc: rec.endUtc });
-  }
-
-  function buildCalendarDescription(rec) {
-    return state.cities.map(function (city, i) { return rangeText(rec.perCity[i], city); }).join("\n") + "\n\n" + (rec.kind === "overlap" ? t("recommendedOverlap") : t("recommendedFallback"));
   }
 
   function buildTimelineAxis() {
@@ -575,24 +560,6 @@
     copyText(location.href).then(function (ok) { setActionStatus(ok ? t("shareCopied") : t("copyFailedUrl")); });
   }
 
-  function downloadIcs() {
-    if (!result || !result.recommendation) return;
-    var rec = result.recommendation;
-    var description = buildCalendarDescription(rec);
-    var uid = "tzo-" + rec.startUtc + "-" + rec.endUtc + "@time-zone-overlap-finder";
-    var ics = TZO.buildIcs({ nowMs: NOW_MS, uid: uid, startUtc: rec.startUtc, endUtc: rec.endUtc, title: "Time zone overlap meeting", description: description });
-    var blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
-    var url = URL.createObjectURL(blob);
-    var link = document.createElement("a");
-    link.href = url;
-    link.download = "time-zone-overlap-meeting.ics";
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    setTimeout(function () { URL.revokeObjectURL(url); }, 0);
-    setActionStatus(t("calendarDownloaded"));
-  }
-
   function loadTheme() {
     var theme = null;
     try { theme = localStorage.getItem("tzo-theme"); } catch (e) {}
@@ -651,7 +618,6 @@
     });
     els.copyResult.addEventListener("click", copyResult);
     els.copyLink.addEventListener("click", copyLink);
-    els.downloadIcs.addEventListener("click", downloadIcs);
     els.theme.addEventListener("click", toggleTheme);
     els.language.addEventListener("click", toggleLanguage);
     document.addEventListener("click", function (event) {
