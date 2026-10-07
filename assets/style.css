@@ -162,6 +162,42 @@ h2 { margin-bottom: 4px; font-size: 1.2rem; letter-spacing: -.02em; }
 .per-city { border: 1px solid var(--color-border); border-radius: 10px; padding: 10px; background: var(--color-bg); }
 .per-city strong { display: block; font-size: .85rem; }
 .per-city span { display: block; font-size: .84rem; color: var(--color-muted); }
+
+.recommendation-why {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  color: var(--color-muted);
+  font-size: .84rem;
+}
+.recommendation-why strong { color: var(--color-text); }
+.recommendation-alternatives {
+  width: min(100%, 620px);
+  margin-top: 4px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border);
+}
+.alternative-title {
+  margin-bottom: 7px;
+  color: var(--color-muted);
+  font-size: .78rem;
+  font-weight: 700;
+}
+.alternative-time {
+  display: block;
+  width: 100%;
+  min-height: 40px;
+  margin-top: 6px;
+  padding: 7px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 9px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: .82rem;
+  font-weight: 700;
+}
+.alternative-time:hover { background: var(--color-working-soft); }
 .action-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 9px; margin-top: 20px; }
 .primary-button, .secondary-button { min-height: 44px; padding: 8px 13px; border-radius: 9px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--color-border); font-weight: 700; }
 .primary-button { background: var(--color-primary); color: white; border-color: var(--color-primary); }
