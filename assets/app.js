@@ -324,6 +324,8 @@
       card.appendChild(sg);
       els.cityList.appendChild(card);
     });
+    els.addCity.hidden = state.cities.length >= MAX_CITIES;
+    els.addCity.setAttribute("aria-hidden", state.cities.length >= MAX_CITIES ? "true" : "false");
   }
 
   function setSegmentButtons(selector, attr, value) {
