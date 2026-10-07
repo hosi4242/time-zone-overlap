@@ -391,10 +391,11 @@
     result.overlapRanges.forEach(function (range) {
       var maxStart = range.endUtc - needed * 60000;
       if (maxStart < range.startUtc) return;
-      var startUtc = range.startUtc;
-      var endUtc = startUtc + needed * 60000;
-      if (!ranges.some(function (item) { return item.startUtc === startUtc; })) {
-        ranges.push({ startUtc: startUtc, endUtc: endUtc });
+      for (var startUtc = range.startUtc; startUtc <= maxStart && ranges.length < 3; startUtc += needed * 60000) {
+        var endUtc = startUtc + needed * 60000;
+        if (!ranges.some(function (item) { return item.startUtc === startUtc; })) {
+          ranges.push({ startUtc: startUtc, endUtc: endUtc });
+        }
       }
     });
     return ranges.slice(0, 3);
