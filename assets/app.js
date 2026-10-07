@@ -447,7 +447,7 @@
       alternatives.forEach(function (range) {
         var start = TZO.localParts(range.startUtc, anchorCity.tz);
         var end = TZO.localParts(range.endUtc, anchorCity.tz);
-        altBlock.appendChild(createElement("button", "alternative-time", formatParts(start) + "–" + formatParts(end) + " · " + anchorCity.name));
+        altBlock.appendChild(createElement("div", "alternative-time", formatParts(start) + "–" + formatParts(end) + " · " + anchorCity.name));
       });
       els.recommendation.appendChild(altBlock);
     }
