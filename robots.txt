@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://time-zone-overlap.hosi4242.workers.dev/sitemap.xml
