@@ -1,10 +1,10 @@
-# Time Zone Overlap Finder
+# Time Zone Meeting Planner | Find Overlapping Hours
 
 A browser-based tool for finding overlapping working hours across time zones.
 
 ## What it does
 
-Time Zone Overlap Finder compares working hours for 2–3 cities on a common UTC timeline. The first city is the anchor, and the selected date is interpreted using the anchor city's local calendar date. Calculations use real UTC instants and the browser's IANA time-zone data, including daylight-saving transitions.
+Time Zone Meeting Planner compares working hours for 2–3 cities on a common UTC timeline. The first city is the anchor, and the selected date is interpreted using the anchor city's local calendar date. Calculations use real UTC instants and the browser's IANA time-zone data, including daylight-saving transitions.
 
 The project is a standalone static page. It has no backend, account system, analytics, advertising, runtime API, CDN dependency, or Service Worker. Core calculations work offline.
 
