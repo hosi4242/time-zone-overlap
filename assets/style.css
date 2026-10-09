@@ -138,6 +138,7 @@ h2 { margin-bottom: 4px; font-size: 1.2rem; letter-spacing: -.02em; }
 .switch-label input { width: 18px; height: 18px; accent-color: var(--color-primary); }
 
 .add-city { margin-top: 14px; margin-inline: auto; display: flex; width: fit-content; }
+.add-city[hidden] { display: none !important; }
 .settings-grid { display: grid; grid-template-columns: minmax(180px, 1fr) minmax(180px, 1fr) minmax(250px, 1.35fr); gap: 14px; margin-top: 20px; }
 .field-group { min-width: 0; border: 0; padding: 0; margin: 0; }
 .field-group > label, .field-group > legend { display: block; font-weight: 700; font-size: .85rem; margin-bottom: 7px; }
