@@ -4,13 +4,13 @@ A browser-based tool for finding overlapping working hours across time zones.
 
 ## What it does
 
-Time Zone Overlap Finder compares working hours for 2–5 cities on a common UTC timeline. The first city is the anchor, and the selected date is interpreted using the anchor city's local calendar date. Calculations use real UTC instants and the browser's IANA time-zone data, including daylight-saving transitions.
+Time Zone Overlap Finder compares working hours for 2–3 cities on a common UTC timeline. The first city is the anchor, and the selected date is interpreted using the anchor city's local calendar date. Calculations use real UTC instants and the browser's IANA time-zone data, including daylight-saving transitions.
 
 The project is a standalone static page. It has no backend, account system, analytics, advertising, runtime API, CDN dependency, or Service Worker. Core calculations work offline.
 
 ## Run locally
 
-The page can be hosted by any simple static server. From the project directory, for example:
+The page can be hosted by any simple static server. Public informational pages are available at `/about.html`, `/privacy.html`, and `/contact.html`; crawl files are `/robots.txt` and `/sitemap.xml`. From the project directory, for example:
 
 ```bash
 python3 -m http.server 8000
@@ -111,6 +111,6 @@ tests.html
 
 ## Browser compatibility and constraints
 
-The project uses plain HTML, CSS, and vanilla JavaScript with ES2020-compatible syntax. It has no third-party runtime libraries, external fonts, CDN resources, backend, or runtime network dependency. The page is designed for mobile-first use, including a 360px viewport, and wide timeline content scrolls inside its own container rather than causing horizontal body scrolling.
+The public tool supports up to three cities. The project uses plain HTML, CSS, and vanilla JavaScript with ES2020-compatible syntax. It has no third-party runtime libraries, external fonts, CDN resources, backend, or runtime network dependency. The page is designed for mobile-first use, including a 360px viewport, and wide timeline content scrolls inside its own container rather than causing horizontal body scrolling.
 
 The application is designed to remain compatible with a strict self-hosted CSP and renders URL/user data through DOM APIs rather than HTML injection.
