@@ -335,6 +335,7 @@
         }
         inputTime.addEventListener("focus", openTimeList);
         inputTime.addEventListener("click", openTimeList);
+        inputTime.addEventListener("blur", closeTimeList);
         inputTime.addEventListener("keydown", function (event) {
           if (event.key === "Escape") closeTimeList();
         });
