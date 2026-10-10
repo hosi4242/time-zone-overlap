@@ -355,12 +355,10 @@ th { color: var(--color-muted); font-size: .74rem; }
 }
 
 
-/* Collapsible working-hours controls within each city card. */
-.schedule-details { margin-top: 12px; border: 1px solid var(--color-border); border-radius: 10px; background: var(--color-surface); overflow: clip; }
-.schedule-details > summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; list-style: none; padding: 10px 12px; font-weight: 700; font-size: .88rem; color: var(--color-text); }
-.schedule-details > summary::-webkit-details-marker { display: none; }
-.schedule-details > summary::after { content: "+"; margin-left: auto; color: var(--color-primary); font-size: 1.2rem; line-height: 1; }
-.schedule-details[open] > summary { border-bottom: 1px solid var(--color-border); background: var(--color-controls-bg); }
-.schedule-details[open] > summary::after { content: "−"; }
-.schedule-details .schedule-grid { padding: 12px; margin-top: 0; }
-.schedule-details .lunch-control { padding-inline: 2px; }
+
+/* Time fields open a scrollable list of 15-minute choices, like the city picker. */
+.time-picker-wrap { position: relative; }
+.time-listbox { position: absolute; z-index: 30; top: calc(100% + 4px); left: 0; right: 0; max-height: min(280px, 42vh); overflow-y: auto; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; box-shadow: var(--shadow); padding: 4px; }
+.time-option { display: block; width: 100%; min-height: 38px; border: 0; border-radius: 7px; background: transparent; color: var(--color-text); text-align: left; padding: 7px 10px; font-variant-numeric: tabular-nums; }
+.time-option:hover, .time-option[aria-selected="true"] { background: var(--color-working-soft); color: var(--color-text); }
+.time-listbox[hidden] { display: none !important; }
