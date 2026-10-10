@@ -6,7 +6,7 @@ A browser-based tool for finding overlapping working hours across time zones.
 
 Time Zone Meeting Planner compares working hours for 2–3 cities on a common UTC timeline. The first city is the anchor, and the selected date is interpreted using the anchor city's local calendar date. Calculations use real UTC instants and the browser's IANA time-zone data, including daylight-saving transitions.
 
-The project is a standalone static page. It has no backend, account system, analytics, advertising, runtime API, CDN dependency, or Service Worker. Core calculations work offline.
+The project is a standalone static page with no backend, account system, calculation API, or Service Worker. Core calculations work in the browser and can run offline. The deployed pages currently include Google Analytics 4 and Cloudflare Web Analytics snippets; analytics availability depends on network access and the providers' services.
 
 ## Run locally
 
